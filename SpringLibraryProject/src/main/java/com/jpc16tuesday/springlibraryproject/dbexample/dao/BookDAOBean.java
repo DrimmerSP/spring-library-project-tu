@@ -1,12 +1,14 @@
 package com.jpc16tuesday.springlibraryproject.dbexample.dao;
 
 import com.jpc16tuesday.springlibraryproject.dbexample.model.Book;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class BookDAOBean {
     private final Connection connection;
     private final String BOOK_SELECT_BY_ID_QUERY = "select * from books where id = ?";
