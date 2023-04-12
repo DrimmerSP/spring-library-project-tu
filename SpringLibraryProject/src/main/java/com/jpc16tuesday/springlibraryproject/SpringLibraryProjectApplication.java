@@ -15,6 +15,6 @@ public class SpringLibraryProjectApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         BookDaoJDBC bookDaoJDBC = new BookDaoJDBC();
-        bookDaoJDBC.findBookById(1);
+        bookDaoJDBC.findBookById(3);
     }
 }

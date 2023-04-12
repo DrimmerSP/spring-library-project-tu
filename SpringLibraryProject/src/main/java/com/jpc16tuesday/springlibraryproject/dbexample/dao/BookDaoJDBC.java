@@ -1,5 +1,6 @@
 package com.jpc16tuesday.springlibraryproject.dbexample.dao;
 
+import com.jpc16tuesday.springlibraryproject.dbexample.db.DBConnection;
 import com.jpc16tuesday.springlibraryproject.dbexample.model.Book;
 
 import java.sql.*;
@@ -8,8 +9,7 @@ import java.util.List;
 
 public class BookDaoJDBC {
     public Book findBookById(Integer bookId) {
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/local_db",
-                "postgres", "12345")) {
+        try (Connection connection = DBConnection.INSTANCE.newConnection()) {
 
             if (connection != null) {
                 System.out.println("Ура! Мы подключились к БД!!!");
@@ -24,6 +24,7 @@ public class BookDaoJDBC {
             List<Book> books = new ArrayList<>();
             while (resultSet.next()) {
                 Book book = new Book();
+                book.setId(resultSet.getInt("id"));
                 book.setAuthor(resultSet.getString("author"));
                 book.setTitle(resultSet.getString("title"));
                 book.setDateAdded(resultSet.getDate("date_added"));
