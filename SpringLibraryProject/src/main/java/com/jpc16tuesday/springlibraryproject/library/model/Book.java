@@ -15,12 +15,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
-
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_generator")
-    private Long id;
+@SequenceGenerator(name = "default_generator", sequenceName = "books_sequence", allocationSize = 1)
+public class Book extends GenericModel {
 
     @Column(name = "title", nullable = false)
     private String bookTitle;

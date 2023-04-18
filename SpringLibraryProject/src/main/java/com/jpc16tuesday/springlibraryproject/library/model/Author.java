@@ -15,11 +15,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_generator")
-    private Long id;
+@SequenceGenerator(name = "default_generator", sequenceName = "authors_sequence", allocationSize = 1)
+public class Author extends GenericModel {
 
     @Column(name = "fio", nullable = false)
     private String authorFIO;
