@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -45,5 +46,8 @@ public class Book {
     @Column(name = "genre", nullable = false)
     @Enumerated
     private Genre genre;
+
+    @ManyToMany(mappedBy = "books")
+    List<Author> authors;
 
 }
