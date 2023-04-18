@@ -18,12 +18,12 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 @SpringBootApplication
 public class SpringLibraryProjectApplication implements CommandLineRunner {
 
-    private BookDAOBean bookDAOBean;
+//    private BookDAOBean bookDAOBean;
 
     //Инжект бина через конструктор
-    public SpringLibraryProjectApplication(BookDAOBean bookDAOBean) {
-        this.bookDAOBean = bookDAOBean;
-    }
+//    public SpringLibraryProjectApplication(BookDAOBean bookDAOBean) {
+//        this.bookDAOBean = bookDAOBean;
+//    }
 
     //Инжект бина через сеттер (сеттер может иметь разное название)
 //    @Autowired
@@ -57,7 +57,7 @@ public class SpringLibraryProjectApplication implements CommandLineRunner {
         //Добавляем аннотацию @Component для BookDAOBean (на 3 шаги был без аннотации)
 
         //Финальный шаг
-        bookDAOBean.findBookById(3);
+//        bookDAOBean.findBookById(3);
 
         //JDBC обертка от спринга (зависимость spring-boot-starter-jdbc) -> работа с темплейтом
 //        List<Book> bookList = jdbcTemplate.query("select * from books",
