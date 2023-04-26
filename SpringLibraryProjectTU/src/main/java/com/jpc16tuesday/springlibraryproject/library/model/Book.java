@@ -43,7 +43,12 @@ public class Book extends GenericModel {
     @Enumerated
     private Genre genre;
 
-    @ManyToMany(mappedBy = "books")
+    @ManyToMany
+    @JoinTable(name = "books_authors",
+            joinColumns = @JoinColumn(name = "book_id"), foreignKey = @ForeignKey(name = "FK_BOOKS_AUTHORS"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"), inverseForeignKey = @ForeignKey(name = "FK_AUTHORS_BOOKS"))
     List<Author> authors;
 
+    @OneToMany(mappedBy = "book")
+    private List<BookRentInfo> bookRentInfos;
 }
