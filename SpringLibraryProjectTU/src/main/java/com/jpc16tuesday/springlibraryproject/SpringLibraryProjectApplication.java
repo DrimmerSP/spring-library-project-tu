@@ -23,7 +23,7 @@ public class SpringLibraryProjectApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws SQLException {
-//        dbExampleStarter.runWeek1();
+        System.out.println("Swagger path: http://localhost:8081/swagger-ui/index.html");
     }
 
 }
