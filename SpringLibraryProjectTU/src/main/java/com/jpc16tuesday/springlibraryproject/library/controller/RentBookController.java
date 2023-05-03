@@ -1,7 +1,9 @@
 package com.jpc16tuesday.springlibraryproject.library.controller;
 
+
+import com.jpc16tuesday.springlibraryproject.library.dto.BookRentInfoDTO;
 import com.jpc16tuesday.springlibraryproject.library.model.BookRentInfo;
-import com.jpc16tuesday.springlibraryproject.library.repository.BookRentInfoRepository;
+import com.jpc16tuesday.springlibraryproject.library.service.BookRentInfoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Аренда книг",
      description = "Контроллер для работы с арендой/выдачей книг пользователям библиотеки")
 public class RentBookController
-      extends GenericController<BookRentInfo> {
-
-    public RentBookController(BookRentInfoRepository repository) {
-        super(repository);
+      extends GenericController<BookRentInfo, BookRentInfoDTO> {
+    
+    public RentBookController(BookRentInfoService bookRentInfoService) {
+        super(bookRentInfoService);
     }
 }
