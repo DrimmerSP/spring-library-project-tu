@@ -43,7 +43,7 @@ public class Book extends GenericModel {
     @Enumerated
     private Genre genre;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"), foreignKey = @ForeignKey(name = "FK_BOOKS_AUTHORS"),
             inverseJoinColumns = @JoinColumn(name = "author_id"), inverseForeignKey = @ForeignKey(name = "FK_AUTHORS_BOOKS"))
@@ -51,4 +51,51 @@ public class Book extends GenericModel {
 
     @OneToMany(mappedBy = "book")
     private List<BookRentInfo> bookRentInfos;
+
+    /*
+    @OneToMany(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY)
+    Book -> many Review (Книга имеет много отзывов/оценок) = отношение
+
+    Book newBook = newBook("title");
+    Review r1 = new Review("Good");
+    Review r2 = new Review("Excellent");
+    newBook.addReview(r1);
+    newBook.addReview(r2);
+    bookRepository.save(newBook)
+    =>
+    как результат данного кода, будет выполнено 3 запроса:
+    insert into books()...;
+    insert into reviews(r1)...;
+    insert into reviews(r2)...;
+    ----------------------------------------------------
+    @OneToMany(cascade=CascadeType.MERGE)
+    Book book = bookRepository.findById(1);
+    book.setDescription("Updated Description")
+    //book.getReviews().get(1);
+    Review r1 = reviewRepository.findById(4);
+    r1.setMark(3);
+    book.save(book)
+    =>
+    update books set description = ? where id = book.id;
+    update reviews set mark = ? where id = review.id;
+
+    ----------------------------------------------------
+    @OneToMany(cascade=CascadeType.REMOVE)
+    Book book = bookRepository.findById(1);
+    bookRepository.delete(book);
+    =>
+
+    delete from reviews where id = ?;
+    delete from reviews where id = ?;
+    delete from books where id = ?;
+
+        ----------------------------------------------------
+    @OneToMany(cascade=CascadeType.REMOVE, orphanRemoval=true)
+    Book book = bookRepository.findById(1);
+    book.removeReview(book.getReviews).get(0));
+    =>
+
+    delete from reviews where id = ?
+     */
+
 }

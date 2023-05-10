@@ -4,14 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString
 @MappedSuperclass
 public abstract class GenericModel {
     @Id
