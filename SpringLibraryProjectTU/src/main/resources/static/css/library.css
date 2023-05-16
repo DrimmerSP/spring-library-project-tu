@@ -1,0 +1,23 @@
+h1 {
+    color: red !important;
+}
+
+span:hover {
+    color: aqua;
+}
+
+.yellow-text {
+    color: yellow;
+}
+
+.red-text {
+    color: red;
+}
+
+.green-text {
+    color: green;
+}
+
+#sub-style {
+    color: darkorange;
+}
