@@ -1,4 +1,4 @@
-package com.jpc16tuesday.springlibraryproject.library.controller;
+package com.jpc16tuesday.springlibraryproject.library.controllers.rest;
 
 
 import com.jpc16tuesday.springlibraryproject.library.dto.BookRentInfoDTO;

@@ -1,64 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>OUR HTML PAGE</title>
-    <link rel="stylesheet" href="../static/css/library.css">
+    <title>Онлайн библиотека</title>
 </head>
 <body>
-    <h1 class="yellow-text">HELLO WORLD!</h1>
-    <h2 class="yellow-text">HELLO WORLD!</h2>
-    <h3 class="green-text">HELLO WORLD!</h3>
-    <h4 class="red-text">HELLO WORLD!</h4>
-    <h5 id="sub-style">HELLO WORLD!</h5>
-
-    <p><span>Привет, как дела?</span></p>
-<!-- div блоки -->
-<div id="parent_div">
-    <div class="child_class">Я текстовый узел!</div>
+<div layout:fragment="content">
+    <h1>Добро пожаловать на главную страницу!</h1>
 </div>
 </body>
-<style>
-    /*h1 {*/
-    /*    color: red !important;*/
-    /*}*/
-
-    /*span:hover {*/
-    /*    color: aqua;*/
-    /*}*/
-
-    /*.yellow-text {*/
-    /*    color: yellow;*/
-    /*}*/
-
-    /*.red-text {*/
-    /*    color: red;*/
-    /*}*/
-
-    /*.green-text {*/
-    /*    color: green;*/
-    /*}*/
-
-    /*#sub-style {*/
-    /*    color: darkorange;*/
-    /*}*/
-
-</style>
-<script>
-    window.alert("Запускаем!")
-    window.onload = function () {
-        console.log("СТРАНИЦА ЗАГРУЖЕНА!");
-
-        let variable;
-        console.log(1 + "1");
-        console.log(1 - "11");
-        console.log(variable);
-    }
-</script>
 </html>
-
-<!--
-HTML +
-CSS +
-JavaScript
--->
