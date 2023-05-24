@@ -1,23 +1,27 @@
-h1 {
-    color: red !important;
-}
-
-span:hover {
-    color: aqua;
-}
-
-.yellow-text {
-    color: yellow;
-}
-
-.red-text {
+.not-enough-book {
     color: red;
 }
 
-.green-text {
-    color: green;
+.nav-link {
+    color: whitesmoke !important;
 }
 
-#sub-style {
-    color: darkorange;
+.btn-primary {
+    color: white !important;
+    background-color: #b84f3c !important;
+    border-color: #b84f3c !important;
+}
+
+.btn-primary:hover {
+    background-color: #b84f3c !important;
+    border-color: #b84f3c !important;
+    color: white !important;
+}
+
+.text-link {
+    text-decoration: none;
+}
+
+.text-link:hover {
+    color: #001445;
 }
