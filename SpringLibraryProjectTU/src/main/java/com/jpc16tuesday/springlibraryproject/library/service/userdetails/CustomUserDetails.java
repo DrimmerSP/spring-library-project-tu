@@ -1,10 +1,14 @@
 package com.jpc16tuesday.springlibraryproject.library.service.userdetails;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomUserDetails
         implements UserDetails {
@@ -69,5 +73,34 @@ public class CustomUserDetails
 
     public Integer getUserId() {
         return id;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "{\"user_id\":\"" + id + "\"," +
+//                "\"username\":\"" + username + "\"," +
+//                "\"user_role\":\"" + authorities + "\"," +
+//                "\"password\":\"" + password + "\"}";    }
+
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(getFieldsToInclude());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return super.toString();
+
+    }
+
+    private Object getFieldsToInclude() {
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("user_id", id);
+        fields.put("username", username);
+        fields.put("user_role", authorities);
+        fields.put("password", password);
+        return fields;
     }
 }

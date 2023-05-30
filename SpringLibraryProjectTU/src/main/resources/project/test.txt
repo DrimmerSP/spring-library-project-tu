@@ -1,0 +1,25 @@
+JWT (JSON WEB TOKEN)
+
+HEADER: Bearer eyJhbGciOiJIU.2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+eyJhbGciOiJIU.2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+- HEADER (Заголовок)
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+- PAYLOAD (Полезная нагрузка) // (CLAIMS)
+{
+  "exp":
+  "sub": "1234567890",
+  "name": "John Doe",
+  "role": ADMIN,
+  "special_id": "123456677"
+}
+
+
+- SIGNATURE (ПОДПИСЬ)
+
+

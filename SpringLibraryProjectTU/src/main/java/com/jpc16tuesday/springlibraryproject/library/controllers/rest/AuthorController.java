@@ -4,19 +4,19 @@ import com.jpc16tuesday.springlibraryproject.library.dto.AuthorDTO;
 import com.jpc16tuesday.springlibraryproject.library.model.Author;
 import com.jpc16tuesday.springlibraryproject.library.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 //@Hidden
 @RestController
 @RequestMapping("/authors") // http://localhost:8080/authors
+@SecurityRequirement(name = "Bearer Authentication")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Tag(name = "Авторы", description = "Контроллер для работы с авторами книг из библиотеки")
 public class AuthorController
         extends GenericController<Author, AuthorDTO> {
