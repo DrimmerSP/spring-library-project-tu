@@ -2,26 +2,57 @@ package com.jpc16tuesday.springlibraryproject.library.service;
 
 
 import com.jpc16tuesday.springlibraryproject.library.dto.BookDTO;
+import com.jpc16tuesday.springlibraryproject.library.dto.BookSearchDTO;
 import com.jpc16tuesday.springlibraryproject.library.mapper.BookMapper;
 import com.jpc16tuesday.springlibraryproject.library.model.Author;
 import com.jpc16tuesday.springlibraryproject.library.model.Book;
 import com.jpc16tuesday.springlibraryproject.library.repository.AuthorRepository;
 import com.jpc16tuesday.springlibraryproject.library.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.util.List;
+
 @Service
 public class BookService
-      extends GenericService<Book, BookDTO> {
+        extends GenericService<Book, BookDTO> {
     private final AuthorRepository authorRepository;
-    
+
     protected BookService(BookRepository repository,
                           BookMapper mapper,
                           AuthorRepository authorRepository) {
         super(repository, mapper);
         this.authorRepository = authorRepository;
     }
-    
+
+    public Page<BookDTO> getAllBooks(Pageable pageable) {
+        Page<Book> booksPaginated = repository.findAll(pageable);
+        List<BookDTO> result = mapper.toDTOs(booksPaginated.getContent());
+        return new PageImpl<>(result, pageable, booksPaginated.getTotalElements());
+    }
+
+    public Page<BookDTO> searchBook(BookSearchDTO bookSearchDTO,
+                                    Pageable pageRequest) {
+
+        String genre = bookSearchDTO.getGenre() != null
+                ? String.valueOf(bookSearchDTO.getGenre().ordinal())
+                : null;
+
+        Page<Book> booksPaginated = ((BookRepository) repository).searchBooks(
+                bookSearchDTO.getBookTitle(),
+                genre,
+                bookSearchDTO.getAuthorFio(),
+                pageRequest
+        );
+
+        List<BookDTO> result = mapper.toDTOs(booksPaginated.getContent());
+        return new PageImpl<>(result, pageRequest, booksPaginated.getTotalElements());
+
+    }
+
     public BookDTO addAuthor(final Long bookId,
                              final Long authorId) {
         BookDTO book = getOne(bookId);

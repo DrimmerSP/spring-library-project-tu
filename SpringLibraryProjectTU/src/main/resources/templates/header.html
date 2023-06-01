@@ -18,15 +18,19 @@
             <a class="nav-link active" aria-current="page" href="/authors">Авторы</a>
           </li>
           <li sec:authorize="isAuthenticated() && (hasRole('USER'))" class="nav-link">
-            <a class="nav-link active" aria-current="page" href="/my/books">Мои книги</a>
+            <a class="nav-link active" aria-current="page" th:href="'/rent/user-books/' + ${#authentication.getPrincipal().getUserId()}">Мои книги</a>
           </li>
           <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))" class="nav-link">
             <a class="nav-link active" aria-current="page" href="/users/list">Пользователи</a>
           </li>
         </ul>
+        <form class="d-flex" sec:authorize="isAuthenticated()">
+          <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+        </form>
         <div sec:authorize="isAuthenticated() && !hasRole('ADMIN')">
           <a class="nav-link active" style="float: right" th:href="'/users/profile/' + ${#authentication.getPrincipal().getUserId()}">Профиль</a>
         </div>
+
         <form class="d-flex" sec:authorize="!isAuthenticated()">
           <a href="/login" class="btn btn-primary" role="button" aria-disabled="true">Войти</a>
         </form>

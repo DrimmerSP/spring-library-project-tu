@@ -4,6 +4,9 @@ import com.jpc16tuesday.springlibraryproject.library.dto.GenericDTO;
 import com.jpc16tuesday.springlibraryproject.library.mapper.GenericMapper;
 import com.jpc16tuesday.springlibraryproject.library.model.GenericModel;
 import com.jpc16tuesday.springlibraryproject.library.repository.GenericRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -32,6 +35,12 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
 
     public List<D> listAll() {
         return mapper.toDTOs(repository.findAll());
+    }
+
+    public Page<D> listAll(Pageable pageable) {
+        Page<E> objects = repository.findAll(pageable);
+        List<D> result = mapper.toDTOs(objects.getContent());
+        return new PageImpl<>(result, pageable, objects.getTotalElements());
     }
 
     public D getOne(final Long id) {

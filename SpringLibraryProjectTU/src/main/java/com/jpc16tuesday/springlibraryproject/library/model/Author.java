@@ -20,7 +20,7 @@ public class Author extends GenericModel {
     @Column(name = "fio", nullable = false)
     private String authorFIO;
 
-    @Column(name = "bith_date")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Column(name = "description")

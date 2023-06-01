@@ -18,10 +18,12 @@ public class BookDTO
     private String bookTitle;
     private LocalDate publishDate;
     private String publish;
+    private Integer pageCount;
     private Integer amount;
     private String storagePlace;
     private String onlineCopyPath;
     private String description;
     private Genre genre;
     private List<Long> authorIds;
+    private List<AuthorDTO> authorInfo;
 }

@@ -20,5 +20,6 @@ public class BookRentInfoDTO
     private Integer rentPeriod;
     private Long bookId;
     private Long userId;
+    private BookDTO bookDTO;
     
 }

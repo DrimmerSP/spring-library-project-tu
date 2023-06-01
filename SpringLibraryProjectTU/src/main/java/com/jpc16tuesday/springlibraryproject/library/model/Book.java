@@ -27,6 +27,9 @@ public class Book extends GenericModel {
     @Column(name = "publish_date", nullable = false)
     private LocalDate publishDate;
 
+    @Column(name = "page_count")
+    private Integer pageCount;
+
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
