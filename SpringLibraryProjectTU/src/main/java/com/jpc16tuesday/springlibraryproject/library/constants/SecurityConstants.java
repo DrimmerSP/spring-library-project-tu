@@ -10,7 +10,7 @@ public interface SecurityConstants {
             "/css/**",
             "/",
             "/swagger-ui/**",
-            "/webjars/bootstrap/5.0.2/**",
+            "/webjars/bootstrap/5.3.0/**",
             "/v3/api-docs/**");
 
     List<String> BOOKS_WHITE_LIST = List.of("/books",
