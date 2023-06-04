@@ -2,6 +2,7 @@ package com.jpc16tuesday.springlibraryproject.library.controllers.mvc;
 
 import com.jpc16tuesday.springlibraryproject.library.dto.UserDTO;
 import com.jpc16tuesday.springlibraryproject.library.service.UserService;
+import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Objects;
 
 import static com.jpc16tuesday.springlibraryproject.library.constants.UserRolesConstants.ADMIN;
 
@@ -44,4 +47,36 @@ public class MVCUserController {
         userService.create(userDTO);
         return "redirect:login";
     }
+
+    @GetMapping("/remember-password")
+    public String rememberPassword() {
+        return "users/rememberPassword";
+    }
+
+    @PostMapping("/remember-password")
+    public String rememberPassword(@ModelAttribute("changePasswordForm") UserDTO userDTO) {
+        userDTO = userService.getUserByEmail(userDTO.getEmail());
+        if (Objects.isNull(userDTO)) {
+            return "Error!";//TODO: Error!
+        } else {
+            userService.sendChangePasswordEmail(userDTO);
+            return "redirect:/login";
+        }
+    }
+
+    @GetMapping("/change-password")
+    public String changePassword(@PathParam(value = "uuid") String uuid,
+                                 Model model) {
+        model.addAttribute("uuid", uuid);
+        return "users/changePassword";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(@PathParam(value = "uuid") String uuid,
+                                 @ModelAttribute("changePasswordForm") UserDTO userDTO) {
+        userService.changePassword(uuid, userDTO.getPassword());
+        return "redirect:/login";
+    }
+
+
 }

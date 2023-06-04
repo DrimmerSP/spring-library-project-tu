@@ -31,7 +31,8 @@ public interface SecurityConstants {
             "/authors/delete");
 
 
-    List<String> USERS_WHITE_LIST = List.of("/login",
+    List<String> USERS_WHITE_LIST = List.of(
+            "/login",
             "/users/registration",
             "/users/remember-password",
             "/users/change-password");

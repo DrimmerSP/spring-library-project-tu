@@ -8,12 +8,11 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository
         extends GenericRepository<User> {
 
-    //select * from users where login = ?
-//    @Query(nativeQuery = true,
-//            value = "select * from users where login = :login")
     User findUserByLogin(String login);
 
     User findUserByEmail(String email);
 
-//    User getUserByPhone(String phone);
+    User findUserByChangePasswordToken(String uuid);
+
+
 }

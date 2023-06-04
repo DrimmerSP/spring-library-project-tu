@@ -48,6 +48,9 @@ public class User extends GenericModel {
         @Column(name = "address", nullable = false)
         private String address;
 
+        @Column(name = "change_password_token")
+        private String changePasswordToken;
+
         @ManyToOne(cascade = CascadeType.MERGE)
         @JoinColumn(name = "role_id", nullable = false,
                     foreignKey = @ForeignKey(name = "FK_USERS_ROLES"))
