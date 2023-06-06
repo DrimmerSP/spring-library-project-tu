@@ -26,7 +26,6 @@ public class MVCBookRentInfoController {
         this.bookService = bookService;
     }
 
-
     @GetMapping("/book/{bookId}")
     public String rentBook(@PathVariable Long bookId,
                            Model model) {
@@ -35,10 +34,17 @@ public class MVCBookRentInfoController {
     }
 
     @PostMapping("/book")
-    public String rentBook(@ModelAttribute("rentBookInfo")BookRentInfoDTO bookRentInfoDTO) {
+    public String rentBook(@ModelAttribute("rentBookInfo") BookRentInfoDTO rentBookInfoDTO) {
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        bookRentInfoDTO.setUserId(Long.valueOf(customUserDetails.getUserId()));
-        bookRentInfoService.rentBook(bookRentInfoDTO);
+        rentBookInfoDTO.setUserId(Long.valueOf(customUserDetails.getUserId()));
+        bookRentInfoService.rentBook(rentBookInfoDTO);
+        return "redirect:/rent/user-books/" + customUserDetails.getUserId();
+    }
+
+    @GetMapping("/return-book/{id}")
+    public String returnBook(@PathVariable Long id) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        bookRentInfoService.returnBook(id);
         return "redirect:/rent/user-books/" + customUserDetails.getUserId();
     }
 
@@ -48,10 +54,9 @@ public class MVCBookRentInfoController {
                             @PathVariable Long id,
                             Model model) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
-        Page<BookRentInfoDTO> rentInfoDTOPage = bookRentInfoService.listAll(pageRequest);
+        Page<BookRentInfoDTO> rentInfoDTOPage = bookRentInfoService.listUserRentBooks(id, pageRequest);
         model.addAttribute("rentBooks", rentInfoDTOPage);
+        model.addAttribute("userId", id);
         return "userBooks/viewAllUserBooks";
     }
-
-
 }

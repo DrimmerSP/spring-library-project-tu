@@ -10,6 +10,6 @@ import lombok.ToString;
 @ToString
 public class BookSearchDTO {
     private String bookTitle;
-    private String authorFio;
+    private String authorFIO;
     private Genre genre;
 }

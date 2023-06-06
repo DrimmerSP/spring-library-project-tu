@@ -11,6 +11,8 @@ public interface SecurityConstants {
             "/",
             "/swagger-ui/**",
             "/webjars/bootstrap/5.3.0/**",
+            "/webjars/bootstrap/5.3.0/css/**",
+            "/webjars/bootstrap/5.3.0/js/**",
             "/v3/api-docs/**");
 
     List<String> BOOKS_WHITE_LIST = List.of("/books",
@@ -19,7 +21,7 @@ public interface SecurityConstants {
 
     List<String> AUTHORS_WHITE_LIST = List.of("/authors",
             "/authors/search",
-            "/books/search/author",
+            "/books/search/booksByAuthor",
             "/authors/{id}");
     List<String> BOOKS_PERMISSION_LIST = List.of("/books/add",
             "/books/update",

@@ -24,6 +24,13 @@ public interface BookRepository
                     """)
     Page<Book> searchBooks(@Param(value = "title") String bookTitle,
                            @Param(value = "genre") String genre,
-                           @Param(value = "fio") String authorFio,
+                           @Param(value = "fio") String authorFIO,
                            Pageable pageRequest);
+
+    @Query("""
+          select case when count(b) > 0 then false else true end
+          from Book b join BookRentInfo bri on b.id = bri.book.id
+          where b.id = :id and bri.returned = false
+          """)
+    boolean isBookCanBeDeleted(final Long id);
 }

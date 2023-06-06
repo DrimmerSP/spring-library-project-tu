@@ -1,8 +1,10 @@
 package com.jpc16tuesday.springlibraryproject.library.service;
 
 
+import com.jpc16tuesday.springlibraryproject.library.constants.Errors;
 import com.jpc16tuesday.springlibraryproject.library.dto.BookDTO;
 import com.jpc16tuesday.springlibraryproject.library.dto.BookSearchDTO;
+import com.jpc16tuesday.springlibraryproject.library.exception.MyDeleteException;
 import com.jpc16tuesday.springlibraryproject.library.mapper.BookMapper;
 import com.jpc16tuesday.springlibraryproject.library.model.Author;
 import com.jpc16tuesday.springlibraryproject.library.model.Book;
@@ -44,7 +46,7 @@ public class BookService
         Page<Book> booksPaginated = ((BookRepository) repository).searchBooks(
                 bookSearchDTO.getBookTitle(),
                 genre,
-                bookSearchDTO.getAuthorFio(),
+                bookSearchDTO.getAuthorFIO(),
                 pageRequest
         );
 
@@ -60,5 +62,18 @@ public class BookService
         book.getAuthorIds().add(author.getId());
         update(book);
         return book;
+    }
+
+    @Override
+    public void deleteSoft(final Long id) throws MyDeleteException {
+        Book book = repository.findById(id).orElseThrow(() -> new NotFoundException("Книги не найдено"));
+        boolean bookCanBeDeleted = ((BookRepository)repository).isBookCanBeDeleted(id);
+        if (bookCanBeDeleted) {
+            markAsDeleted(book);
+            repository.save(book);
+        }
+        else {
+            throw new MyDeleteException(Errors.Book.BOOK_DELETE_ERROR);
+        }
     }
 }

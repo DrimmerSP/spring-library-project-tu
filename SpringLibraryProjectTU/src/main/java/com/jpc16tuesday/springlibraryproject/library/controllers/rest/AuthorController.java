@@ -1,8 +1,10 @@
 package com.jpc16tuesday.springlibraryproject.library.controllers.rest;
 
+import com.jpc16tuesday.springlibraryproject.library.dto.AddBookDTO;
 import com.jpc16tuesday.springlibraryproject.library.dto.AuthorDTO;
 import com.jpc16tuesday.springlibraryproject.library.model.Author;
 import com.jpc16tuesday.springlibraryproject.library.service.AuthorService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-//@Hidden
+@Hidden
 @RestController
 @RequestMapping("/authors") // http://localhost:8080/authors
 @SecurityRequirement(name = "Bearer Authentication")
@@ -29,7 +31,10 @@ public class AuthorController
     @RequestMapping(value = "/addBook", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDTO> addBook(@RequestParam(value = "bookId") Long bookId,
                                              @RequestParam(value = "authorId") Long authorId) {
-        return ResponseEntity.status(HttpStatus.OK).body(((AuthorService) service).addBook(bookId, authorId));
+        AddBookDTO addBookDTO = new AddBookDTO();
+        addBookDTO.setAuthorId(authorId);
+        addBookDTO.setBookId(bookId);
+        return ResponseEntity.status(HttpStatus.OK).body(((AuthorService) service).addBook(addBookDTO));
     }
 
 

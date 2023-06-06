@@ -6,6 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Книги библиотеки</title>
+<!--    <script th:inline="javascript">-->
+<!--        let flag = [[${exception}]];//переменная-флаг в thymeleaf-->
+<!--        window.onload = () => {-->
+<!--            if (flag) new bootstrap.Modal(document.getElementById('deleteErrorModal'), {keyboard: false}).show()-->
+<!--        };-->
+<!--    </script>-->
 </head>
 <body>
 <div layout:fragment="content">
@@ -88,23 +94,42 @@
                             <li th:each="author : ${book.getAuthorInfo()}" th:text="${author.getAuthorFIO()}"></li>
                         </ul>
                     </td>
-                    <!--                    <td>-->
-                    <!--                        <a class="text-link text-blue" th:if="${book.getOnlineCopyPath()} != null" th:href="@{|/books/download?bookId=${book.id}|}">-->
-                    <!--                            <span>Скачать книгу</span>-->
-                    <!--                        </a>-->
-                    <!--                    </td>-->
+                    <td>
+<!--                        <a class="text-link text-blue" th:if="${book.getOnlineCopyPath()} != null" th:href="@{|/books/download?bookId=${book.id}|}">-->
+<!--                            <span>Скачать книгу</span>-->
+<!--                        </a>-->
+                    </td>
                     <td>
                         <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))">
                             <a class="btn btn-sm btn-outline-success" th:href="'/books/update/' + ${book.id}">Обновить</a>
-                            <a class="btn btn-sm btn-outline-danger" th:href="'/books/delete/' + ${book.id}">Удалить</a>
+                            <a th:if="${!book.isDeleted()}" class="btn btn-sm btn-outline-danger" th:href="'/books/delete/' + ${book.id}"
+                               onclick="return confirm('Вы действительно хотите удалить книгу?')">Удалить</a>
+                            <a th:if="${book.isDeleted()}" class="btn btn-sm btn-outline-warning" th:href="'/books/restore/' + ${book.getId()}">Восстановить</a>
                         </div>
-                        <a th:if="${book.getAmount() > 0}" sec:authorize="hasRole('USER')" class="btn btn-sm btn-outline-success"
+                        <a th:if="${book.getAmount() > 0}" sec:authorize="!hasRole('ADMIN')" class="btn btn-sm btn-outline-success"
                            th:href="'/rent/book/' + ${book.id}">Арендовать книгу</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+<!--        &lt;!&ndash;Модальное окно для ошибок старт&ndash;&gt;-->
+<!--        <div th:if="${exception != null && exception != ''}" class="modal fade" id="deleteErrorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--            <div class="modal-dialog">-->
+<!--                <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                        <h5 class="modal-title" id="exampleModalLabel">Ошибка</h5>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body" th:text="${exception}">-->
+<!--                    </div>-->
+<!--                    <div class="modal-footer">-->
+<!--                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;Модальное окно для ошибок конец&ndash;&gt;-->
         <div>
             <nav aria-label="Pagination" th:if="${books.totalPages gt 0}">
                 <ul class="pagination justify-content-center font-weight-bold">

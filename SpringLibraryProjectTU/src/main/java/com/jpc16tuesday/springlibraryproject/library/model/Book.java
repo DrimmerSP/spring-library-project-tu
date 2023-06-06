@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//@Where(clause = "is_deleted=false")
 @SequenceGenerator(name = "default_generator", sequenceName = "books_sequence", allocationSize = 1)
 public class Book extends GenericModel {
 

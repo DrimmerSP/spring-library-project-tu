@@ -1,12 +1,14 @@
 package com.jpc16tuesday.springlibraryproject.library.service;
 
 import com.jpc16tuesday.springlibraryproject.library.dto.GenericDTO;
+import com.jpc16tuesday.springlibraryproject.library.exception.MyDeleteException;
 import com.jpc16tuesday.springlibraryproject.library.mapper.GenericMapper;
 import com.jpc16tuesday.springlibraryproject.library.model.GenericModel;
 import com.jpc16tuesday.springlibraryproject.library.repository.GenericRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -23,12 +25,13 @@ import java.util.List;
  */
 @Service
 public abstract class GenericService<E extends GenericModel, D extends GenericDTO> {
-
+    //инжектим абстрактный репозиторий (для работы с БД) и маппер (для преобразования)
     protected final GenericRepository<E> repository;
     protected final GenericMapper<E, D> mapper;
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    public GenericService(GenericRepository<E> repository, GenericMapper<E, D> mapper) {
+    public GenericService(GenericRepository<E> repository,
+                          GenericMapper<E, D> mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
@@ -43,12 +46,17 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
         return new PageImpl<>(result, pageable, objects.getTotalElements());
     }
 
+    public Page<D> listAllNotDeleted(Pageable pageable) {
+        Page<E> preResult = repository.findAllByIsDeletedFalse(pageable);
+        List<D> result = mapper.toDTOs(preResult.getContent());
+        return new PageImpl<>(result, pageable, preResult.getTotalElements());
+    }
+
     public D getOne(final Long id) {
-        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new NotFoundException("Данных по заданному id: " + id + " не найдено!")));
+        return mapper.toDTO(repository.findById(id).orElseThrow(() -> new NotFoundException("Данных по заданному id: " + id + " не найдено")));
     }
 
     public D create(D newObject) {
-        newObject.setCreatedWhen(LocalDateTime.now());
         return mapper.toDTO(repository.save(mapper.toEntity(newObject)));
     }
 
@@ -58,5 +66,28 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
 
     public void delete(final Long id) {
         repository.deleteById(id);
+    }
+
+    public void deleteSoft(final Long id) throws MyDeleteException {
+        E obj = repository.findById(id).orElseThrow(() -> new NotFoundException("Объект не найден"));
+        markAsDeleted(obj);
+        repository.save(obj);
+    }
+
+    public void restore(final Long id) {
+        E obj = repository.findById(id).orElseThrow(() -> new NotFoundException("Объект не найден"));
+        unMarkAsDeleted(obj);
+        repository.save(obj);
+    }
+    public void markAsDeleted(GenericModel genericModel) {
+        genericModel.setDeleted(true);
+        genericModel.setDeletedWhen(LocalDateTime.now());
+        genericModel.setDeletedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    public void unMarkAsDeleted(GenericModel genericModel) {
+        genericModel.setDeleted(false);
+        genericModel.setDeletedWhen(null);
+        genericModel.setDeletedBy(null);
     }
 }
