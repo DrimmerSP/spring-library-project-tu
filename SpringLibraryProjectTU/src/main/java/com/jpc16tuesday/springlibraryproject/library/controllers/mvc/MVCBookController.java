@@ -6,12 +6,26 @@ import com.jpc16tuesday.springlibraryproject.library.dto.BookSearchDTO;
 import com.jpc16tuesday.springlibraryproject.library.exception.MyDeleteException;
 import com.jpc16tuesday.springlibraryproject.library.service.BookService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.springframework.web.servlet.function.RequestPredicates.headers;
 
 @Slf4j
 @Controller
@@ -41,9 +55,15 @@ public class MVCBookController {
     }
 
     @PostMapping("/add")
-    public String create(@ModelAttribute("bookForm") BookDTO newBook) {
+    public String create(@ModelAttribute("bookForm") BookDTO newBook,
+                         @RequestParam("onlineCopy") MultipartFile file) {
         log.info(newBook.toString());
-        bookService.create(newBook);
+        if (file != null && file.getSize() > 0) {
+            log.info(file.getName());
+            bookService.create(newBook, file);
+        } else {
+            bookService.create(newBook);
+        }
         return "redirect:/books";
 
     }
@@ -110,6 +130,28 @@ public class MVCBookController {
         BookSearchDTO bookSearchDTO = new BookSearchDTO();
         bookSearchDTO.setAuthorFIO(authorDTO.getAuthorFIO());
         return searchBooks(page, pageSize, bookSearchDTO,model);
+    }
+
+    @GetMapping(value = "/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public ResponseEntity<Resource> downloadBook(@Param(value = "bookId") Long bookId) throws IOException {
+        BookDTO bookDTO = bookService.getOne(bookId);
+        Path path = Paths.get(bookDTO.getOnlineCopyPath());
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
+        return ResponseEntity.ok()
+                .headers(createHeaders(path.getFileName().toString()))
+                .contentLength(path.toFile().length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
+    private HttpHeaders createHeaders(final String name) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name);
+        headers.add("Cache-Control", "no-cache, no-store");
+        headers.add("Expires", "0");
+        return headers;
     }
 
 }

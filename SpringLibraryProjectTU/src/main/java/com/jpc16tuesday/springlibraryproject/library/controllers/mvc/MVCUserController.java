@@ -48,6 +48,8 @@ public class MVCUserController {
         return "redirect:login";
     }
 
+    //MINIO
+
     @GetMapping("/remember-password")
     public String rememberPassword() {
         return "users/rememberPassword";

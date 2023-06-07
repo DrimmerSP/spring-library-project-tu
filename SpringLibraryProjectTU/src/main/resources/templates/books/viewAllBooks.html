@@ -74,7 +74,7 @@
                     <th scope="col">Количество</th>
                     <th scope="col">Дата публикации</th>
                     <th scope="col">Автор(ы)</th>
-<!--                    <th scope="col">Онлайн копия</th>-->
+                    <th scope="col">Онлайн копия</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -95,9 +95,9 @@
                         </ul>
                     </td>
                     <td>
-<!--                        <a class="text-link text-blue" th:if="${book.getOnlineCopyPath()} != null" th:href="@{|/books/download?bookId=${book.id}|}">-->
-<!--                            <span>Скачать книгу</span>-->
-<!--                        </a>-->
+                        <a class="text-link text-blue" th:if="${book.getOnlineCopyPath()} != null" th:href="@{|/books/download?bookId=${book.id}|}">
+                            <span>Скачать книгу</span>
+                        </a>
                     </td>
                     <td>
                         <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))">

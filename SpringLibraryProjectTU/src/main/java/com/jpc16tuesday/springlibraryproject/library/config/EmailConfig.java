@@ -21,6 +21,7 @@ public class EmailConfig {
     private String mailServerPassword;
 
 
+//    https://help.mail.ru/mail/mailer/popsmtp
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
