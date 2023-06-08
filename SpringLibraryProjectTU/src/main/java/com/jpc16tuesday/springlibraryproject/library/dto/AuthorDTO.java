@@ -1,15 +1,16 @@
 package com.jpc16tuesday.springlibraryproject.library.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import com.jpc16tuesday.springlibraryproject.library.model.Author;
+import com.jpc16tuesday.springlibraryproject.library.model.Book;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class AuthorDTO extends GenericDTO {
@@ -19,23 +20,17 @@ public class AuthorDTO extends GenericDTO {
     List<Long> booksIds;
 
 
-//    public AuthorDTO(Author author) {
-//        this.birthDate = author.getBirthDate();
-//        this.createdBy = author.getCreatedBy();
-//        this.authorFIO = author.getAuthorFIO();
-//        this.description = author.getDescription();
-//        this.id = author.getId();
-//        List<Book> books = author.getBooks();
-//        List<Long> bookIds = new ArrayList<>();
-//        books.forEach(book -> bookIds.add(book.getId()));
-//        this.bookIds = bookIds;
-//    }
-//
-//    public static List<AuthorDTO> getAuthorDTOs(List<Author> authors) {
-//        List<AuthorDTO> authorDTOS = new ArrayList<>();
-//        for (Author author : authors) {
-//            authorDTOS.add(new AuthorDTO(author));
-//        }
-//        return authorDTOS;
-//    }
+    public AuthorDTO(Author author) {
+        this.birthDate = author.getBirthDate();
+        this.createdBy = author.getCreatedBy();
+        this.authorFIO = author.getAuthorFIO();
+        this.description = author.getDescription();
+        this.createdWhen = author.getCreatedWhen();
+        this.id = author.getId();
+        List<Book> books = author.getBooks();
+        List<Long> bookIds = new ArrayList<>();
+        books.forEach(b -> bookIds.add(b.getId()));
+        this.booksIds = bookIds;
+        this.isDeleted = false;
+    }
 }

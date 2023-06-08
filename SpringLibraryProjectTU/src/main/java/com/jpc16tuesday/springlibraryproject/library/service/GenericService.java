@@ -52,6 +52,10 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
         return new PageImpl<>(result, pageable, preResult.getTotalElements());
     }
 
+    public List<D> listAllNotDeleted() {
+        return mapper.toDTOs(repository.findAllByIsDeletedFalse());
+    }
+
     public D getOne(final Long id) {
         return mapper.toDTO(repository.findById(id).orElseThrow(() -> new NotFoundException("Данных по заданному id: " + id + " не найдено")));
     }
