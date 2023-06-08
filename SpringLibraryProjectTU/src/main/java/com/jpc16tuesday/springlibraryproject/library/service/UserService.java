@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -60,12 +61,12 @@ public class UserService
     public void sendChangePasswordEmail(final UserDTO userDTO) {
         UUID uuid = UUID.randomUUID();
         log.info("Generated Token: {} ", uuid);
+
         userDTO.setChangePasswordToken(uuid.toString());
         update(userDTO);
 
         SimpleMailMessage mailMessage = MailUtils.createMailMessage(
                 userDTO.getEmail(),
-                "libraryproject@bk.ru",
                 MailConstants.MAIL_SUBJECT_FOR_REMEMBER_PASSWORD,
                 MailConstants.MAIL_MESSAGE_FOR_REMEMBER_PASSWORD + uuid
         );
@@ -79,5 +80,9 @@ public class UserService
         userDTO.setChangePasswordToken(null);
         userDTO.setPassword(bCryptPasswordEncoder.encode(password));
         update(userDTO);
+    }
+
+    public List<String> getUserEmailsWithDelayedRentDate() {
+        return ((UserRepository) repository).getDelayedEmails();
     }
 }

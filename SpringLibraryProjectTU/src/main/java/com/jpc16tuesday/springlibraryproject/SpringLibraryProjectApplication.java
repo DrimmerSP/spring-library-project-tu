@@ -5,12 +5,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.sql.SQLException;
 
 
 @SpringBootApplication
+@EnableScheduling
 public class SpringLibraryProjectApplication implements CommandLineRunner {
 
     @Value("${server.port}")
@@ -27,7 +27,7 @@ public class SpringLibraryProjectApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws SQLException {
+    public void run(String... args) {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String hashedPassword = encoder.encode("admin");
