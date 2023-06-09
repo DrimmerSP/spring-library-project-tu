@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Hidden
 @RestController
-@RequestMapping("/authors") // http://localhost:8080/authors
+@RequestMapping("/rest/authors") // http://localhost:8080/authors
 @SecurityRequirement(name = "Bearer Authentication")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Tag(name = "Авторы", description = "Контроллер для работы с авторами книг из библиотеки")

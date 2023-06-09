@@ -63,6 +63,7 @@ public class MVCAuthorController {
     
     @PostMapping("/add")
     public String create(@ModelAttribute("authorForm") AuthorDTO authorDTO) {
+        log.info(authorDTO.toString());
         authorService.create(authorDTO);
         return "redirect:/authors";
     }
