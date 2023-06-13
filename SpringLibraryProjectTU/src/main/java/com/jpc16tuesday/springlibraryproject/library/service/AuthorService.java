@@ -9,6 +9,8 @@ import com.jpc16tuesday.springlibraryproject.library.model.Author;
 import com.jpc16tuesday.springlibraryproject.library.model.Book;
 import com.jpc16tuesday.springlibraryproject.library.repository.AuthorRepository;
 import com.jpc16tuesday.springlibraryproject.library.repository.BookRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

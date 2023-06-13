@@ -1,6 +1,7 @@
 package com.jpc16tuesday.springlibraryproject.library.controllers.rest;
 
 import com.jpc16tuesday.springlibraryproject.library.dto.GenericDTO;
+import com.jpc16tuesday.springlibraryproject.library.exception.MyDeleteException;
 import com.jpc16tuesday.springlibraryproject.library.model.GenericModel;
 import com.jpc16tuesday.springlibraryproject.library.service.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,10 +67,15 @@ public abstract class GenericController<E extends GenericModel, D extends Generi
 
     //localhost:8080/authors/delete?id=1 - @RequestParam
     //localhost:8080/authors/delete/1 - @PathVariable
-    @Operation(description = "Удалить запись", method = "delete")
+    @Operation(description = "Обновить запись", method = "update")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable(value = "id") Long id) {
-        service.delete(id);
+    public void delete(@PathVariable(value = "id") Long id) throws MyDeleteException {
+        service.deleteSoft(id);
     }
 
+    @Operation(description = "Удалить запись по ID", method = "delete")
+    @RequestMapping(value = "/delete/hard/{id}", method = RequestMethod.DELETE)
+    public void deleteHard(@PathVariable(value = "id") Long id) throws MyDeleteException {
+        service.delete(id);
+    }
 }

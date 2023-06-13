@@ -6,6 +6,7 @@ import com.jpc16tuesday.springlibraryproject.library.dto.AuthorDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -16,11 +17,13 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
+@Profile("dev")
 public class AuthorRestControllerTest
       extends CommonTestREST {
     private static Long createdTestAuthorId;
@@ -31,7 +34,7 @@ public class AuthorRestControllerTest
     protected void listAll() throws Exception {
         log.info("Тест по просмотру всех авторов через REST начат");
         String result = mvc.perform(
-                    MockMvcRequestBuilders.get("/rest/authors/getAll")
+                    MockMvcRequestBuilders.get("/api/rest/authors/getAll")
                           .headers(super.headers)
                           .contentType(MediaType.APPLICATION_JSON)
                           .accept(MediaType.APPLICATION_JSON)
@@ -64,7 +67,7 @@ public class AuthorRestControllerTest
          */
         AuthorDTO result = objectMapper.readValue(
               mvc.perform(
-                          MockMvcRequestBuilders.post("/rest/authors/add")
+                          MockMvcRequestBuilders.post("/api/rest/authors/add")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .headers(super.headers)
                                 .content(asJsonString(authorDTO))
@@ -77,6 +80,7 @@ public class AuthorRestControllerTest
                     .getContentAsString(),
               AuthorDTO.class);
         createdTestAuthorId = result.getId();
+        log.info("{}", createdTestAuthorId);
         log.info("Тест по созданию автора через REST закончен");
     }
     
@@ -87,7 +91,7 @@ public class AuthorRestControllerTest
         log.info("Тест по обновлению автора через REST начат");
         AuthorDTO existingTestAuthor = objectMapper.readValue(
               mvc.perform(
-                          MockMvcRequestBuilders.get("/rest/authors/getOneById")
+                          MockMvcRequestBuilders.get("/api/rest/authors/getOneById")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .headers(super.headers)
                                 .param("id", String.valueOf(createdTestAuthorId))
@@ -105,7 +109,7 @@ public class AuthorRestControllerTest
         
         //вызываем update по REST API
         mvc.perform(
-                    MockMvcRequestBuilders.put("/rest/authors/update")
+                    MockMvcRequestBuilders.put("/api/rest/authors/update")
                           .contentType(MediaType.APPLICATION_JSON)
                           .headers(super.headers)
                           .content(asJsonString(existingTestAuthor))
@@ -122,8 +126,9 @@ public class AuthorRestControllerTest
     void addBook() throws Exception {
         log.info("Тест по добавлению книги к автору через REST начат");
         AddBookDTO addBookDTO = new AddBookDTO(1L, createdTestAuthorId);
+        log.info("addBookDTO: {}", addBookDTO);
         String result = mvc.perform(
-                    MockMvcRequestBuilders.post("/rest/authors/addBook")
+                    MockMvcRequestBuilders.post("/api/rest/authors/addBook")
                           .contentType(MediaType.APPLICATION_JSON)
                           .headers(super.headers)
                           .content(asJsonString(addBookDTO))
@@ -144,7 +149,7 @@ public class AuthorRestControllerTest
     protected void deleteObject() throws Exception {
         log.info("Тест по удалению автора через REST начат");
         mvc.perform(
-                    MockMvcRequestBuilders.delete("/rest/authors/delete/{id}", createdTestAuthorId)
+                    MockMvcRequestBuilders.delete("/api/rest/authors/delete/{id}", createdTestAuthorId)
                           .contentType(MediaType.APPLICATION_JSON)
                           .headers(super.headers)
                           .accept(MediaType.APPLICATION_JSON)
@@ -154,7 +159,7 @@ public class AuthorRestControllerTest
         
         AuthorDTO existingTestAuthor = objectMapper.readValue(
               mvc.perform(
-                          MockMvcRequestBuilders.get("/rest/authors/getOneById")
+                          MockMvcRequestBuilders.get("/api/rest/authors/getOneById")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .headers(super.headers)
                                 .param("id", String.valueOf(createdTestAuthorId))
@@ -166,10 +171,10 @@ public class AuthorRestControllerTest
                     .getResponse()
                     .getContentAsString(),
               AuthorDTO.class);
-//        assertTrue(existingTestAuthor.isDeleted());
+        assertTrue(existingTestAuthor.isDeleted());
         log.info("Тест по удалению автора через REST закончен");
         mvc.perform(
-                    MockMvcRequestBuilders.delete("/rest/authors/delete/hard/{id}", createdTestAuthorId)
+                    MockMvcRequestBuilders.delete("/api/rest/authors/delete/hard/{id}", createdTestAuthorId)
                           .contentType(MediaType.APPLICATION_JSON)
                           .headers(super.headers)
                           .accept(MediaType.APPLICATION_JSON)
