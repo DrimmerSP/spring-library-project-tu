@@ -27,7 +27,7 @@ public class MailScheduler {
 
     //Крон на каждую минуту: "0 0/1 * 1/1 * *"
     //"0 0 6 * * ?"
-    @Scheduled(cron = "0 0/1 * 1/1 * *") // каждый день в 6 утра
+    @Scheduled(cron = "0 0 6 * * ?") // каждый день в 6 утра
     public void sentMailsToDebtors() {
         log.info("Запуск планировщика по проверки должников....");
         List<String> emails = userService.getUserEmailsWithDelayedRentDate();

@@ -4,11 +4,15 @@ import java.util.List;
 
 public interface SecurityConstants {
 
-    List<String> RESOURCES_WHITE_LIST = List.of("/resources/**",
+    List<String> RESOURCES_WHITE_LIST = List.of(
+            "/resources/**",
             "/static/**",
             "/js/**",
             "/css/**",
+            "/img/**",
+            "/carousel/**",
             "/",
+            "/error",
             "/swagger-ui/**",
             "/webjars/bootstrap/5.3.0/**",
             "/webjars/bootstrap/5.3.0/css/**",

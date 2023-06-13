@@ -5,6 +5,7 @@ import com.jpc16tuesday.springlibraryproject.library.dto.BookDTO;
 import com.jpc16tuesday.springlibraryproject.library.dto.BookSearchDTO;
 import com.jpc16tuesday.springlibraryproject.library.exception.MyDeleteException;
 import com.jpc16tuesday.springlibraryproject.library.service.BookService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -19,8 +20,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
+import org.webjars.NotFoundException;
 
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,10 +46,12 @@ public class MVCBookController {
     @GetMapping
     public String getAll(@RequestParam(value = "page", defaultValue = "1") int page,
                          @RequestParam(value = "size", defaultValue = "5") int pageSize,
+                         @ModelAttribute(name = "exception") final String exception,
                          Model model) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC, "bookTitle"));
         Page<BookDTO> books = bookService.getAllBooks(pageRequest);
         model.addAttribute("books", books);
+        model.addAttribute("exception", exception);
         return "books/viewAllBooks";
     }
 
@@ -98,6 +105,9 @@ public class MVCBookController {
     @GetMapping("/restore/{id}")
     public String restore(@PathVariable Long id) {
         bookService.restore(id);
+        if (id.equals(123L)) {
+            throw new NotFoundException("НЕ НАЙДЕНО!");
+        }
         return "redirect:/books";
     }
 
@@ -129,7 +139,7 @@ public class MVCBookController {
                               Model model) {
         BookSearchDTO bookSearchDTO = new BookSearchDTO();
         bookSearchDTO.setAuthorFIO(authorDTO.getAuthorFIO());
-        return searchBooks(page, pageSize, bookSearchDTO,model);
+        return searchBooks(page, pageSize, bookSearchDTO, model);
     }
 
     @GetMapping(value = "/download", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -152,6 +162,15 @@ public class MVCBookController {
         headers.add("Cache-Control", "no-cache, no-store");
         headers.add("Expires", "0");
         return headers;
+    }
+
+    @ExceptionHandler({MyDeleteException.class, AccessDeniedException.class, NotFoundException.class})
+    public RedirectView handleError(HttpServletRequest request,
+                                    Exception exception,
+                                    RedirectAttributes redirectAttributes) {
+        log.error("Запрос " + request.getRequestURL() + " вызвал ошибку: " + exception.getMessage());
+        redirectAttributes.addFlashAttribute("exception", exception.getMessage());
+        return new RedirectView("/books", true);
     }
 
 }

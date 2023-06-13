@@ -6,15 +6,15 @@
     color: whitesmoke !important;
 }
 
-.btn-primary {
+.btn-info  {
     color: white !important;
-    background-color: #b84f3c !important;
-    border-color: #b84f3c !important;
+    background-color: #0a4275 !important;
+    border-color: white !important;
 }
 
-.btn-primary:hover {
-    background-color: #b84f3c !important;
-    border-color: #b84f3c !important;
+.btn-info:hover {
+    background-color: #208fd0 !important;
+    border-color: white !important;
     color: white !important;
 }
 
@@ -25,3 +25,6 @@
 .text-link:hover {
     color: #001445;
 }
+
+
+

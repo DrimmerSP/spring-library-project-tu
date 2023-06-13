@@ -5,6 +5,7 @@ import com.jpc16tuesday.springlibraryproject.library.exception.MyDeleteException
 import com.jpc16tuesday.springlibraryproject.library.mapper.GenericMapper;
 import com.jpc16tuesday.springlibraryproject.library.model.GenericModel;
 import com.jpc16tuesday.springlibraryproject.library.repository.GenericRepository;
+import com.jpc16tuesday.springlibraryproject.library.service.GenericService;
 import com.jpc16tuesday.springlibraryproject.library.service.userdetails.CustomUserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
